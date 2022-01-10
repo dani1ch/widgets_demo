@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widgets_demo/global_theme.dart';
 
 class NavigationDemo extends StatefulWidget {
   const NavigationDemo({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class _NavigationDemoState extends State<NavigationDemo> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: globalTheme(),
       initialRoute: '/',
       routes: {
         '/':(context) => const MainScreen(),
@@ -27,7 +29,7 @@ Widget navDrawer(context) => Drawer(
     padding: EdgeInsets.zero,
     children: [
       DrawerHeader(
-          decoration: const BoxDecoration(color: Colors.blue),
+          decoration: const BoxDecoration(color: Colors.amber),
           child: Container(
             height: 200,
           ),
@@ -53,7 +55,9 @@ Widget navDrawer(context) => Drawer(
           Navigator.pushNamed(context, '/profile');
         },
       ),
-      const Divider(),
+      const Divider(
+        color: Colors.amber,
+      ),
       ListTile(
         leading: const Icon(Icons.settings),
         title:  const Text ("Настройки"),
@@ -70,8 +74,13 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final ButtonStyle buttonStyle =
     TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+    const borderStyle = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(36)),
+      borderSide: BorderSide(
+          color: Color(0xFFeceff1), width: 2),);
 
     return SafeArea(
       child: Scaffold(
@@ -88,9 +97,61 @@ class MainScreen extends StatelessWidget {
           ],
         ),
         drawer: navDrawer(context),
-        body: const Center(
-            child: Text ("Главная страница")
-        ),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 70),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 50,),
+                const SizedBox(width: 110,height: 83,
+                  child: Image(image: AssetImage('assets/img/logo.png'),),),
+                const SizedBox(height: 20,),
+                const Text("Введите логин в виде 10 цифр номера телефона",),
+                const SizedBox(height: 20,),
+                const TextField(
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    filled: true,
+                    enabledBorder: borderStyle,
+                    focusedBorder: borderStyle,
+                    labelText: "Телефон",
+                  ),
+                ),
+                const SizedBox(height: 20,),
+                const TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    enabledBorder: borderStyle,
+                    focusedBorder: borderStyle,
+                    labelText: "Пароль",
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                SizedBox(
+                  width: 180,
+                  height: 45,
+                  child: ElevatedButton(
+                    onPressed: (){},
+                    child: const Text("Войти"),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.0),
+                        )
+                    ),),
+                ),
+                const SizedBox(height: 60,),
+                InkWell(child: const Text("Регистрация"),
+                  onTap: (){},),
+                const SizedBox(height: 20,),
+                InkWell(child: const Text("Забыли пароль?"),
+                  onTap: (){},),
+              ],
+            ),
+          ),
+        )
       ),
     );
   }
